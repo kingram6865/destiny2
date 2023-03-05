@@ -89,13 +89,13 @@ async function writeToken(data) {
   let hour = (date.getHours() < 10) ? `0${date.getHours()}` : date.getHours()
   let minutes = (date.getMinutes()) ? `0${date.getMinutes()}` : date.getMinutes()
   let seconds = (date.getSeconds() < 10) ? `0${date.getSeconds()}` : date.getSeconds()
-  let filename = `${date.getFullYear()}${month}${date.getDate()}_${hours}${minutes}${seconds}.json`
+  let filename = `${date.getFullYear()}${month}${date.getDate()}_${hour}${minutes}${seconds}.json`
 
   let destination = `./data/tokens/${filename}`
   let results1 = await fs.writeFile(destination, data)
   let results2 = await fs.writeFile('./data/tokens/current.json', data)
 
-  console.log(results1, results2)
+  // console.log(results1, results2)
   return (results1, results2)
 }
 
