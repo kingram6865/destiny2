@@ -74,7 +74,6 @@ async function getToken(code) {
     response = await axios.post(`${process.env.TOKENURL}`, params, headers)
     token_data = {...response.data}
     let output = JSON.stringify(token_data).replace("\\","")
-    // console.log(response.data)
     console.log(token_data)
     console.log(output)
     writeToken(output)
