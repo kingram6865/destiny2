@@ -29,3 +29,19 @@ async function retrieveInventoryItem(id) {
     return results.data
   }
 }
+
+async function getMembershipIds() {
+  let response
+  const reqData = {
+    "displayName": `${process.env.DISPLAYNAME}`,
+    "displayNameCode": process.env.DISPLAYNAMECODE
+  }
+
+  let url = `${process.env.APISERVER}/Destiny2/SearchDestinyPlayerByBungieName/All/`
+  try {
+    response = await axios.post(url, reqData, headers)
+    console.log(response.data)
+  } catch(err) {
+    console.log(err)
+  }
+}
