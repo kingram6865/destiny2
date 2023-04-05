@@ -8,7 +8,7 @@ const headers = {
   }  
 }
 
-const token = require('./data/tokens/202302201858.js')
+const token = require('./data/tokens/current.json')
 
 async function getMembershipIds() {
   let response
