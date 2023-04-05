@@ -1,6 +1,6 @@
 require('dotenv').config()
 const fs = require('fs').promises
-const oauth = btoa(`${process.env.CLIENTID}:${process.env.OASECRET}`)
+const oauth = Buffer.from(`${process.env.CLIENTID}:${process.env.OASECRET}`,'base64')
 const apiKey = process.env.APIKEY
 const axios = require('axios')
 const url = process.env.APISERVER
