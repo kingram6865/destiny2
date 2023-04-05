@@ -1,5 +1,5 @@
 require('dotenv').config()
-const token = require('./data/tokens/current.js')
+const token = require('./data/tokens/current.json')
 const access_token = token.access_token
 const apiKey = process.env.APIKEY
 const axios = require('axios')
@@ -9,9 +9,8 @@ const headers = {
   }  
 }
 
-const oauth = btoa(`${process.env.CLIENTID}:${process.env.OASECRET}`)
-
-
+// const oauth = Buffer.from(`${process.env.CLIENTID}:${process.env.OASECRET}`,'base64')
+// console.log(oauth)
 
 const url = "https://www.bungie.net/Platform/Destiny2/3/Profile/24300038/?components=PROFILES"
 
@@ -21,7 +20,7 @@ const params = new URLSearchParams({
 
 async function profiles() {
   let response
-  headers.headers.Authorization = `Bearer ${oauth}`
+  headers.headers.Authorization = `Bearer ${access_token}`
   headers.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
   // const params = new URLSearchParams({
@@ -34,8 +33,9 @@ async function profiles() {
     "refresh_token": `${token.refresh_token}`,
     "components": "PROFILES"
   })
-
+  
   try {
+    // This AJAX call retrieves Profile(100) and ProfileInventories(102)
     response = await axios.get('https://www.bungie.net/Platform/Destiny2/5/Profile/4611686018511662948/?components=100,102', headers)
     console.log(JSON.stringify(response.data, null, 2))
   } catch(err) {
