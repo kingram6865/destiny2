@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
-    "dotenv": "^16.0.2"
+    "dotenv": "^16.0.2",
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.6"
   }
 }
