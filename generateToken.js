@@ -61,7 +61,7 @@ async function getPlayerInfo(prefix, code) {
 
 
 async function getToken(code) {
-  let response
+  let response, tokenTime, tokenExpires, refreshExpires
   headers.headers.Authorization = `Basic ${oauth}`
   headers.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
@@ -72,7 +72,12 @@ async function getToken(code) {
 
   try {
     response = await axios.post(`${process.env.TOKENURL}`, params, headers)
-    token_data = {...response.data}
+    console.log(response.data)
+    tokenTime = new Date()
+    tokenExpires = new Date(tokenTime.getTime() + (response.data.expires_in * 1000))
+    refreshExpires = new Date(tokenTime.getTime() + response.data.refresh_expires_in)
+    token_data = {...response.data, ...{tokenTime, tokenExpires, refreshExpires}}
+
     let output = JSON.stringify(token_data).replace("\\","")
     console.log(token_data)
     console.log(output)
