@@ -12,6 +12,36 @@ const headers = {
   }  
 }
 
-
 let refreshed_token_data = {}
 
+async function retrieveCurrentToken() {
+  let file = JSON.parse(await fs.readFile('./data/tokens/current.json'))
+  return file
+}
+
+async function refreshToken() {
+  let response
+  let token_data = await retrieveCurrentToken()
+
+  headers.headers.Authorization = `Bearer ${token_data.access_token}`
+
+  const params = new URLSearchParams({
+    "grant_type": "refresh_token",
+    "refresh_token": `${token_data.refresh_token}`
+  })
+
+  console.log(params)
+  // try {
+  //   response = await axios.post(`${process.env.TOKENURL}`, params, headers)
+  //   refreshed_token_data = {...response.data}
+  //   console.log(response.data)
+  // } catch(err) {
+  //   console.log(err)
+  // }
+}
+
+async function execute() {
+  refreshToken()
+}
+
+execute()
