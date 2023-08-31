@@ -1,6 +1,34 @@
 # Cold Storage: A Bungie API interface for Destiny 2
 
+## Overview
 
+In order to access Bungie API endpoints which require authentication, we have to create an access token.
+
+Creating an access token requires getting a user's permission with them granting it through an interface provided by Bungie
+
+Access to Bungie's permission interface is provided by registering an app and then having a redirect from an https configured web page
+
+1. Set up a bungie developer account.
+
+2. Fill in the required information for the proposed app
+
+3. Create a page to interface with the permission page
+
+4. Retrieve the authorization code from the redirecdt page
+
+5. Generate the token which allows permissions
+
+## Cold Storage page
+
+- Navigate to https://sdl.org/coldstorage
+- Click 'Get Authorization'
+- Approve the Login when the Bungie permission page comes up
+- copy the code from Cold storage when returned to https://sdl.org/coldstorage
+- run `node generateToken.js <code>` where <code> is the value from the previous step
+
+
+
+## General Info
 
 Base Path: https://www.bungie.net/Platform
 
@@ -43,14 +71,9 @@ https://bungie-net.github.io/multi/operation_get_Destiny2-GetItem.html#operation
 
 Retrieve the details of an instanced Destiny Item. An instanced Destiny item is one with an ItemInstanceId. Non-instanced items, such as materials, have no useful instance-specific details and thus are not queryable here.
 
-destinyMembershipId
-The membership ID of the destiny profile.
-Type|int64|itemInstanceId
-The Instance ID of the destiny item.
-Type|int64|membershipType
-A valid non-BungieNet membership type.
-The types of membership the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType.
-Type|int32|
+destinyMembershipId: The membership ID of the destiny profile. Type|int64|
+itemInstanceId: The Instance ID of the destiny item. Type|int64|
+membershipType: A valid non-BungieNet membership type. The types of membership the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType. Type|int32|
 ## GET /Destiny2/{membershipType}/Profile/{destinyMembershipId}/Item/{itemInstanceId}/
 https://bungie-net.github.io/multi/operation_get_Destiny2-GetItem.html#operation_get_Destiny2-GetItem
 
@@ -108,3 +131,7 @@ Metrics|1100|Returns summary status information about all "Metrics" (also known 
 StringVariables|1200|Returns a mapping of localized string variable hashes to values, on a per-account or per-character basis.
 Craftables|1300|Returns summary status information about all "Craftables" aka crafting recipe items.
 SocialCommendations|1400|Returns score values for all commendations and commendation nodes.
+
+itemHash
+itemInstanceId
+bucketHash
