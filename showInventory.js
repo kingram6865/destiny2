@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bungieBase = 'https://www.bungie.net/Platform/Destiny2'
 const token = require('./data/tokens/current.json')
 const access_token = token.access_token
 const apiKey = process.env.APIKEY
