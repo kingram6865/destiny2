@@ -76,10 +76,14 @@ async function getToken(code) {
     tokenTime = new Date()
     tokenExpires = new Date(tokenTime.getTime() + (response.data.expires_in * 1000))
     refreshExpires = new Date(tokenTime.getTime() + response.data.refresh_expires_in)
-    token_data = {...response.data, ...{tokenTime, tokenExpires, refreshExpires}}
+    tokenTimeLocal = tokenTime.toLocaleString()
+    tokenExpiresLocal = tokenExpires.toLocaleString()
+    refreshExpiresLocal = refreshExpires.toLocaleString()
+
+    token_data = {...response.data, ...{tokenTime, tokenExpires, refreshExpires}, localTimes: {tokenTimeLocal, tokenExpiresLocal, refreshExpiresLocal}}
 
     let output = JSON.stringify(token_data).replace("\\","")
-    console.log(token_data)
+
     console.log(output)
     writeToken(output)
   } catch (err) {
@@ -89,7 +93,7 @@ async function getToken(code) {
 
 async function writeToken(data) {
   let date = new Date()
-  let month = (date.getMonth() < 10) ? `0${date.getMonth()}` : date.getMonth()
+  let month = (date.getMonth() < 10) ? `0${date.getMonth()+1}` : date.getMonth()+1
   let hour = (date.getHours() < 10) ? `0${date.getHours()}` : date.getHours()
   let minutes = (date.getMinutes()) ? `0${date.getMinutes()}` : date.getMinutes()
   let seconds = (date.getSeconds() < 10) ? `0${date.getSeconds()}` : date.getSeconds()
@@ -103,13 +107,22 @@ async function writeToken(data) {
   return (results1, results2)
 }
 
+async function readToken() {
+  let file = await fs.readFile('./data/tokens/current.json')
+  // let token = JSON.parse(JSON.stringify(file.toString()))
+  let token = JSON.parse(file.toString())
+
+  return token
+}
+
 async function refreshToken() {
   let response
-  headers.headers.Authorization = `Bearer ${token_data.access_token}`
+  let token = await readToken()
+  headers.headers.Authorization = `Bearer ${token.refresh_token}`
 
   const params = new URLSearchParams({
     "grant_type": "refresh_token",
-    "refresh_token": `${token_data.access_token}`
+    "refresh_token": `${token.refresh_token}`
   })
 
   try {
@@ -143,8 +156,10 @@ async function refreshToken() {
 // }
 
 // authorize()
-
 // getToken('f88a842dab337961772f70c70c180b56')
+
 getToken(process.argv[2])
 
-// user()
+// readToken()
+//   // .then(x => console.log(JSON.parse(x)))
+//   .then(x => console.log(x))
